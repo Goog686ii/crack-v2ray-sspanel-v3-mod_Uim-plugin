@@ -1,5 +1,5 @@
 # 基础镜像
-FROM phusion/baseimage
+FROM phusion/baseimage:master-amd64
 # 软件源加速
 # COPY sources.list /etc/apt/sources.list
 RUN apt update
