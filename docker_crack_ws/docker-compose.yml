@@ -1,6 +1,6 @@
 version: '3'
 services:
-    v2ray_tls:
+    v2ray_ws:
         build:
           context: ./
           dockerfile: Dockerfile
@@ -16,3 +16,5 @@ services:
             - 8233:8233
         privileged: true
         restart: always
+        extra_hosts:
+            - "auth.rico93.com:127.0.0.1"

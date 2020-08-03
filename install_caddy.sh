@@ -6,26 +6,11 @@ path=$4
 v2ray_port=$5
 echo $domain $email $proxy_site $path $v2ray_port
 _download_caddy_file() {
-	# caddy_tmp="/tmp/install_caddy/"
-	# caddy_tmp_file="/tmp/install_caddy/caddy.tar.gz"
-	# [[ -d $caddy_tmp ]] && rm -rf $caddy_tmp
-	# if [[ ! ${caddy_arch} ]]; then
-	# 	echo -e "$red 获取 Caddy 下载参数失败！$none" && exit 1
-	# fi
-	# local caddy_download_link="https://caddyserver.com/download/linux/${caddy_arch}?license=personal"
-
-	# mkdir -p $caddy_tmp
-
-	# if ! wget --no-check-certificate -O "$caddy_tmp_file" $caddy_download_link; then
-	# 	echo -e "$red 下载 Caddy 失败！$none" && exit 1
-	# fi
-
-	# tar zxf $caddy_tmp_file -C $caddy_tmp
-	# cp -f ${caddy_tmp}caddy /usr/local/bin/
-
-	wget -qO- https://getcaddy.com | bash -s personal
-
-	if [[ ! -f /usr/local/bin/caddy ]]; then
+	echo "deb [trusted=yes] https://apt.fury.io/caddy/ /" | sudo tee -a /etc/apt/sources.list.d/caddy-fury.list
+	sudo apt install apt-transport-https
+	sudo apt update
+	sudo apt install caddy
+	if [[ ! -f /usr/bin/caddy ]]; then
 		echo -e "$red 安装 Caddy 出错！$none" && exit 1
 	fi
 }
@@ -90,18 +75,13 @@ _install_caddy_service() {
 
 main(){
     _download_caddy_file
-    _install_caddy_service
+    # _install_caddy_service
     cat >/etc/caddy/Caddyfile <<-EOF
 ${domain} {
     tls ${email}
-    gzip
-	timeouts none
-    proxy / ${proxy_site} {
-        except /${path}
-    }
-    proxy /${path} 127.0.0.1:${v2ray_port} {
-        websocket
-    }
+    encode gzip
+    reverse_proxy / ${proxy_site}   
+    reverse_proxy /${path} 127.0.0.1:${v2ray_port}
 }
 import sites/*
 		EOF

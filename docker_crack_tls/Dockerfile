@@ -4,7 +4,13 @@ FROM phusion/baseimage
 # COPY sources.list /etc/apt/sources.list
 RUN apt update
 RUN apt-get install wget curl -y
+# 设置时区
+ENV TZ=Asia/Shanghai
 
+RUN echo "${TZ}" > /etc/timezone \
+    && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && apt install -y tzdata \
+    && rm -rf /var/lib/apt/lists/*
 # 安装v2ray
 ARG panelurl
 ARG panelkey
@@ -14,7 +20,7 @@ ARG speedtestrate
 ARG paneltype
 ARG usemysql
 
-RUN wget -N --no-check-certificate https://raw.githubusercontent.com/RManOfCN/pay-v2ray-sspanel-v3-mod_Uim-plugin/master/install-release.sh &&chmod +x install-release.sh
+RUN wget -N --no-check-certificate https://raw.githubusercontent.com/RManLuo/crack-v2ray-sspanel-v3-mod_Uim-plugin/master/install-release.sh &&chmod +x install-release.sh
 RUN bash install-release.sh --panelurl ${panelurl} --panelkey ${panelkey} --nodeid ${nodeid} --downwithpanel ${downwithpanel} --speedtestrate ${speedtestrate} --paneltype ${paneltype} --usemysql ${usemysql}
 
 #安装 caddy
@@ -24,7 +30,7 @@ ARG fakeurl
 ARG v2ray_path
 ARG v2ray_port
 
-RUN wget -N --no-check-certificate https://raw.githubusercontent.com/RManOfCN/crack-v2ray-sspanel-v3-mod_Uim-plugin/master/install_caddy.sh && chmod +x install_caddy.sh
+RUN wget -N --no-check-certificate https://raw.githubusercontent.com/RManLuo/crack-v2ray-sspanel-v3-mod_Uim-plugin/master/install_caddy.sh && chmod +x install_caddy.sh
 RUN bash install_caddy.sh ${nodeurl} ${mail} ${fakeurl} ${v2ray_path} ${v2ray_port}
 
 COPY ./start.sh /

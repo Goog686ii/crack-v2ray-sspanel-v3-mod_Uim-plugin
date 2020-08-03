@@ -121,6 +121,15 @@ while [[ $# > 0 ]];do
         --cfemail)
         CFEMAIL="$2"
         ;;
+        --nodeuserlimited)
+        NODEUSERLIMITED="$2"
+        ;;
+        --useip)
+        USEIP="$2"
+        ;;
+        --proxytcp)
+        PROXYTCP="$2"
+        ;;
         *)
                 # unknown option
         ;;
@@ -164,8 +173,7 @@ downloadV2Ray(){
     rm -rf /tmp/v2ray
     mkdir -p /tmp/v2ray
     colorEcho ${BLUE} "Downloading V2Ray."
-    DOWNLOAD_LINK="https://github.com/RManLuo/crack-v2ray-sspanel-v3-mod_Uim-plugin/releases/download/crack_4.22.1/crack_v2ray-4.22.1.6.zip"
-    colorEcho ${BLUE} ${DOWNLOAD_LINK}
+    DOWNLOAD_LINK="https://github.com/v2rayv3/pay-v2ray-sspanel-v3-mod_Uim-plugin/releases/download/${NEW_VER}/v2ray-linux-${VDIS}.zip"
     curl ${PROXY} -L -H "Cache-Control: no-cache" -o ${ZIPFILE} ${DOWNLOAD_LINK}
     if [ $? != 0 ];then
         colorEcho ${RED} "Failed to download! Please check your network or try again."
@@ -417,8 +425,29 @@ installV2Ray(){
         fi
         if [ ! -z "${CFEMAIL}" ]
         then
-          sed -i "s|\"rico93@outlxxxxxxxxxx.com\"|\"${CFEMAIL}\"|g" "/etc/v2ray/config.json"
+          sed -i "s|\"v2rayV3@test.com\"|\"${CFEMAIL}\"|g" "/etc/v2ray/config.json"
             colorEcho ${BLUE} "CFEMAIL:${CFEMAIL}"
+        fi
+
+        if [ ! -z "${NODEUSERLIMITED}" ]
+        then
+                sed -i "s|\"NodeUserLimited\": 4|\"NodeUserLimited\": ${NODEUSERLIMITED}|g" "/etc/v2ray/config.json"
+                colorEcho ${BLUE} "NODEUSERLIMITED:${NODEUSERLIMITED}"
+
+        fi
+
+        if [ ! -z "${USEIP}" ]
+        then
+                sed -i "s|\"UseIP\"|\"${UseIP}\"|g" "/etc/v2ray/config.json"
+                colorEcho ${BLUE} "USEIP:${USEIP}"
+
+        fi
+
+        if [ ! -z "${PROXYTCP}" ]
+        then
+                sed -i "s|\"proxy_tcp\": 0|\"proxy_tcp\": ${PROXYTCP}|g" "/etc/v2ray/config.json"
+                colorEcho ${BLUE} "PROXYTCP:${PROXYTCP}"
+
         fi
 
     fi
@@ -589,7 +618,6 @@ main(){
     fi
     colorEcho ${GREEN} "V2Ray ${NEW_VER} is installed."
     rm -rf /tmp/v2ray
-    echo '127.0.0.1 auth.rico93.com'>> /etc/hosts # 屏蔽验证服务器
     return 0
 }
 
