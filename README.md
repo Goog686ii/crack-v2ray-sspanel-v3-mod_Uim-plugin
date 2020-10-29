@@ -1,9 +1,8 @@
 # crack-v2ray-sspanel-v3-mod_Uim-plugin
-# 本版本是肮脏的破解版本，只是自己学习使用，请支持原版
-# 破解二进制文件下载地址：[release](https://github.com/RManLuo/crack-v2ray-sspanel-v3-mod_Uim-plugin/releases)
+# 本版本是破小解版本
+# 破小解二进制文件下载地址：[release](https://github.com/RManLuo/crack-v2ray-sspanel-v3-mod_Uim-plugin/releases)
 # 使用教程请看 [备份WIKI](https://github.com/splendidwrx/v2ray-wiki)
 ## 支持原版
-Malio SSPANEL主题 + V2Ray后端，原价1000，现在只需899（V2ray 是按年订阅），👉[查看详情](https://malio.fxxkmy.life/)
 
 ## 普通安装
 ### 后端安装
